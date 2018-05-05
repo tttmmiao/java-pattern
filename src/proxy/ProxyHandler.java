@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
  * proxy handler
  */
 public class ProxyHandler implements InvocationHandler {
+    volatile int x;
     private Subject subject;
     public ProxyHandler(Subject subject){
         this.subject = subject;

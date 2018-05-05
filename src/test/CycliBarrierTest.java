@@ -11,9 +11,9 @@ import java.util.concurrent.CyclicBarrier;
 public class CycliBarrierTest implements Runnable {
     private static List list = new ArrayList(3);
     private CyclicBarrier barrier;
-    private XString name = "";
+    private String name = "";
 
-    public CycliBarrierTest(CyclicBarrier barrier, XString name) {
+    public CycliBarrierTest(CyclicBarrier barrier, String name) {
         this.barrier = barrier;
         this.name = name;
     }
