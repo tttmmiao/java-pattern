@@ -3,10 +3,38 @@ package leetcode;
 
 /**
  * see https://leetcode.com/problems/merge-k-sorted-lists/description/
- * 思路：将节点放在数组中比较
+ * 自己的思路：将节点放在数组中比较
+ * 考虑性能的思路：二分的方式，一半一半合并
  */
 public class MergeKSortedLists {
     public static ListNode mergeKLists(ListNode[] lists) {
+        ListNode res = new ListNode(-1);
+        ListNode p = res.next;
+        int len = lists.length;
+        merge(0,len-1,lists);
+        return res.next;
+    }
+
+    public static ListNode merge(int start, int end, ListNode[] lists){
+        if(end < start){
+            return null;
+        }
+        if(start == end){
+            return lists[start];
+        }
+        int mid = (start + end) / 2;
+        ListNode left = merge(start,mid,lists);
+        ListNode right = merge(mid+1, end, lists);
+
+        //todo
+        return left;
+
+    }
+
+    /**
+     * 空间复杂度为O(N),时间复杂度为O(N2)
+     */
+    public static ListNode mergeKListsV1(ListNode[] lists) {
         ListNode res = new ListNode(-1);
         ListNode head = res;
         int len = lists.length;
