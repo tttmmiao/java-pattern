@@ -13,7 +13,7 @@ import java.util.Scanner;
  *  "ZEFGY"
  * ]
  *
- * 上下左右查找，给定字符串能够按照从grid中找出一条路径
+ * 上下左右查找，给定字符串能够按照顺序从grid中找出一条路径
  *
  * 给定字符串
  * "ABCCTG" - 返回true
