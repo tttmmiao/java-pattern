@@ -5,7 +5,11 @@ import java.util.Map;
 
 /**
  * see https://leetcode.com/problems/sudoku-solver/description/
- * 整体思路：回溯法
+ * 整体思路：穷举遍历+递归回溯法
+ * 关键点：
+ * （1）递归的出口：行指针 >= 9
+ * (2) 使用flag数组标识board对应位置是否有原始值
+ * (3) 有效条件的判断
  */
 public class SudokuSolver {
     public static void solveSudoku(char[][] board) {
@@ -47,7 +51,7 @@ public class SudokuSolver {
             i = i + 1;
             j = 0;
         }
-        if(i >= 9){
+        if(i == 9){
             //退出条件：所有值设置为1,不再回溯，尝试其他可能
             for(int r = 0;r < 9;r++){
                 for(int c = 0; c < 9; c++ ){
@@ -57,33 +61,32 @@ public class SudokuSolver {
             return;
         }
 
-        if(flag[i][j] != 0){
+        if(0 == flag[i][j]){
+            for(int candidate = 1; candidate <= 10; candidate++){
+                if(1 == flag[i][j]){
+                    break;
+                }
+                if(0 == flag[i][j] && board[i][j] != '.'){
+              /*  System.out.println("回退前");
+                print(board);*/
+                    remove(board[i][j],i,j,rowMap,colMap,blockMap);
+                    board[i][j] = '.';
+              /*  System.out.println("回退后");
+                print(board);*/
+                }
+                if(candidate > 9){
+                    break;
+                }
+                char ch = (char)(candidate+48);
+                if(isValid(ch,i,j,rowMap,colMap,blockMap)){
+                    board[i][j] = ch;
+                    place(board,i,j+1,rowMap,colMap,blockMap,flag);
+                }
+            }
+        }else{
             place(board,i,j+1,rowMap,colMap,blockMap,flag);
         }
 
-        for(int candidate = 1; candidate <= 10; candidate++){
-            if(1 == flag[i][j]){
-               break;
-            }
-            if(0 == flag[i][j] && board[i][j] != '.'){
-              /*  System.out.println("回退前");
-                print(board);*/
-                remove(board[i][j],i,j,rowMap,colMap,blockMap);
-                board[i][j] = '.';
-              /*  System.out.println("回退后");
-                print(board);*/
-            }
-            if(candidate > 9){
-                break;
-            }
-            char ch = (char)(candidate+48);
-            if(isValid(ch,i,j,rowMap,colMap,blockMap)){
-                board[i][j] = ch;
-                place(board,i,j+1,rowMap,colMap,blockMap,flag);
-            }else{
-                continue;
-            }
-        }
     }
 
     /**
