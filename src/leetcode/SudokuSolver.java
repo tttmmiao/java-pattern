@@ -35,7 +35,7 @@ public class SudokuSolver {
             }
         }
 
-        for(int i = 0 ;i < 9; i++){
+        /*for(int i = 0 ;i < 9; i++){
             for(int j = 0;j < 9; j++){
                 char ch = board[i][j];
                 if( ch == '.'){
@@ -43,7 +43,8 @@ public class SudokuSolver {
                     break;
                 }
             }
-        }
+        }*/
+        solve(board,rowMap,colMap,blockMap);
     }
 
     public static void place(char[][] board,int i, int j, Map<String,Integer> rowMap,  Map<String,Integer> colMap, Map<String,Integer> blockMap, int[][] flag){
@@ -122,6 +123,34 @@ public class SudokuSolver {
         rowMap.remove(rowKey);
         colMap.remove(colKey);
         blockMap.remove(blockKey);
+    }
+
+    public static boolean solve(char[][] board,Map<String,Integer> rowMap,  Map<String,Integer> colMap, Map<String,Integer> blockMap){
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                if(board[i][j] == '.'){
+                    //遍历尝试
+                    for(char c = '1'; c <= '9'; c++){
+                        if(isValid(c, i, j, rowMap,colMap,blockMap)){
+                            // 放入候选值
+                            board[i][j] = c;
+                            if(solve(board,rowMap,colMap,blockMap)){
+                                // 找到解，返回
+                                return true;
+                            }
+                            else{
+                                // 回溯
+                                remove(board[i][j],i,j,rowMap,colMap,blockMap);
+                                board[i][j] = '.';
+                            }
+                        }
+                    }
+
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public static void main(String[] args){
